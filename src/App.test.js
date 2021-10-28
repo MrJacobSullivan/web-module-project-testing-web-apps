@@ -5,5 +5,3 @@ import App from './App'
 test('renders without errors', () => {
   render(<App />)
 })
-
-test('when mounts header is rendered', () => {})
