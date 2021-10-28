@@ -25,12 +25,22 @@ test('renders ONE error message if user enters less then 5 characters into first
   userEvent.type(input, 'ttt')
 
   await waitFor(() => {
-    const error = screen.getByText(/Error: firstName must have at least 5 characters./i)
+    const error = screen.getByTestId('error')
     expect(error).toHaveTextContent(/Error: firstName must have at least 5 characters./i)
   })
 })
 
-test('renders THREE error messages if user enters no values into any fields.', async () => {})
+test('renders THREE error messages if user enters no values into any fields.', async () => {
+  render(<ContactForm />)
+
+  const button = screen.getByRole('button')
+  userEvent.click(button)
+
+  await waitFor(() => {
+    const errors = screen.getAllByTestId('error')
+    expect(errors).toHaveLength(3)
+  })
+})
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {})
 
