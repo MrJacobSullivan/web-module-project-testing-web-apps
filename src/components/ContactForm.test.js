@@ -17,7 +17,18 @@ test('renders the contact form header', () => {
   expect(header).toHaveTextContent(/Contact Form/i)
 })
 
-test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {})
+test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
+  render(<ContactForm />)
+
+  const input = screen.getByLabelText(/First Name*/i)
+
+  userEvent.type(input, 'ttt')
+
+  await waitFor(() => {
+    const error = screen.getByText(/Error: firstName must have at least 5 characters./i)
+    expect(error).toHaveTextContent(/Error: firstName must have at least 5 characters./i)
+  })
+})
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {})
 
