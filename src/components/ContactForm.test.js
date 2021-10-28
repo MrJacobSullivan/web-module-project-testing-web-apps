@@ -92,27 +92,72 @@ test('renders "lastName is a required field" if an last name is not entered and 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
   render(<ContactForm />)
 
+  const inputs = {
+    firstName: 'Jacob',
+    lastName: 'Sullivan',
+    email: 'j@email.com',
+    message: 'lorum ipsum',
+  }
+
   const firstName = screen.getByLabelText(/First Name*/i)
-  userEvent.type(firstName, 'Jacob')
+  userEvent.type(firstName, inputs.firstName)
 
   const lastName = screen.getByLabelText(/Last Name*/i)
-  userEvent.type(lastName, 'Sullivan')
+  userEvent.type(lastName, inputs.lastName)
 
   const email = screen.getByLabelText(/Email*/i)
-  userEvent.type(email, 'j@email.com')
-
-  await waitFor(() => {
-    const result = screen.queryByDisplayValue(/You Submitted:/i)
-    expect(result).not.toBeInTheDocument()
-  })
+  userEvent.type(email, inputs.email)
 
   const button = screen.getByRole('button')
   userEvent.click(button)
 
-  await waitFor(() => {
-    const result = screen.queryByDisplayValue(/You Submitted:/i)
-    expect(result).toBeInTheDocument()
-  })
+  const firstNameDisplay = screen.getByTestId(/firstnameDisplay/i)
+  expect(firstNameDisplay).toHaveTextContent(inputs.firstName)
+
+  const lastNameDisplay = screen.getByTestId(/lastnameDisplay/i)
+  expect(lastNameDisplay).toHaveTextContent(inputs.lastName)
+
+  const emailDisplay = screen.getByTestId(/emailDisplay/i)
+  expect(emailDisplay).toHaveTextContent(inputs.email)
+
+  const messageDisplay = screen.queryByTestId(/messageDisplay/i)
+  expect(messageDisplay).not.toBeTruthy()
 })
 
-test('renders all fields text when all fields are submitted.', async () => {})
+test('renders all fields text when all fields are submitted.', async () => {
+  render(<ContactForm />)
+
+  const inputs = {
+    firstName: 'Jacob',
+    lastName: 'Sullivan',
+    email: 'j@email.com',
+    message: 'lorum ipsum',
+  }
+
+  const firstName = screen.getByLabelText(/First Name*/i)
+  userEvent.type(firstName, inputs.firstName)
+
+  const lastName = screen.getByLabelText(/Last Name*/i)
+  userEvent.type(lastName, inputs.lastName)
+
+  const email = screen.getByLabelText(/Email*/i)
+  userEvent.type(email, inputs.email)
+
+  const message = screen.getByLabelText(/Message/i)
+  userEvent.type(message, inputs.message)
+
+  const button = screen.getByRole('button')
+  userEvent.click(button)
+
+  const firstNameDisplay = screen.getByTestId(/firstnameDisplay/i)
+  expect(firstNameDisplay).toHaveTextContent(inputs.firstName)
+
+  const lastNameDisplay = screen.getByTestId(/lastnameDisplay/i)
+  expect(lastNameDisplay).toHaveTextContent(inputs.lastName)
+
+  const emailDisplay = screen.getByTestId(/emailDisplay/i)
+  expect(emailDisplay).toHaveTextContent(inputs.email)
+
+  const messageDisplay = screen.getByTestId(/messageDisplay/i)
+  expect(messageDisplay).toHaveTextContent(inputs.message)
+})
